@@ -1,23 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://gqck4tv4hx7k"]
+[gd_scene load_steps=4 format=3 uid="uid://bqt5jcpisoah"]
 
 [ext_resource type="PackedScene" uid="uid://duo4hqcg1g70f" path="res://player/Player.tscn" id="1_2dftf"]
-[ext_resource type="Texture2D" uid="uid://dcgrdy82470op" path="res://icon.svg" id="1_c6gwx"]
+[ext_resource type="Texture2D" uid="uid://b8lxgauyuesta" path="res://env_textures/Green/texture_09.png" id="2_1tnoa"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_c6gwx"]
-size = Vector2(1135.5, 36.5)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qcaji"]
+albedo_texture = ExtResource("2_1tnoa")
 
-[node name="Main" type="Node2D"]
+[node name="TestArea" type="Node3D"]
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("1_2dftf")]
-position = Vector2(158, 415)
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_2dftf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0022039413, 0, -0.009332657)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(567, 629)
-shape = SubResource("RectangleShape2D_c6gwx")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/CollisionShape2D"]
-position = Vector2(2.5, -4.249993)
-scale = Vector2(8.6796875, 0.08203136)
-texture = ExtResource("1_c6gwx")
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(25, 1, 25)
+material = SubResource("StandardMaterial3D_qcaji")
