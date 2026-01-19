@@ -7,6 +7,8 @@ public partial class Player : CharacterBody3D
     private Vector3 rotation;
     private Node3D cameraPivot;
     
+    private AnimationTree anim;
+
     [Export(PropertyHint.Range, "0,0.5")]
     private float cameraSensitivity_H = 0.05f;
     [Export(PropertyHint.Range, "0,0.5")]
@@ -22,6 +24,7 @@ public partial class Player : CharacterBody3D
         cameraPivot = GetNode<Node3D>("CameraPivot");
         body = GetNode<Node3D>("Body");
         rotation = body.Rotation;
+        anim = GetNode<AnimationTree>("AnimationTree");
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
@@ -88,6 +91,11 @@ public partial class Player : CharacterBody3D
         }
 
         Velocity = velocity;
+        anim.Set("parameters/conditions/idle", (IsOnFloor() && inputDir == Vector2.Zero));
+        anim.Set("parameters/conditions/move", (IsOnFloor() && inputDir != Vector2.Zero));
+        anim.Set("parameters/conditions/falling", !IsOnFloor());
+        anim.Set("parameters/conditions/landing", IsOnFloor());
+        
         MoveAndSlide();
     }
 }
