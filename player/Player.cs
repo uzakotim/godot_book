@@ -9,12 +9,12 @@ public partial class Player : CharacterBody3D
     
     private AnimationTree anim;
 
-    [Export(PropertyHint.Range, "0,0.5")]
+    [Export(PropertyHint.Range, "0,1.0")]
     private float cameraSensitivity_H = 0.05f;
-    [Export(PropertyHint.Range, "0,0.5")]
+    [Export(PropertyHint.Range, "0,1.0")]
     private float cameraSensitivity_V = 0.05f;
     
-    private Vector3 maxSpringRotation = new Vector3(30, 30, 0);
+    private Vector3 maxSpringRotation = new Vector3(85, 30, 0);
 
     public float ConvertDegreesToRadians(float degrees) =>
         degrees * ((float)Math.PI / 180);
@@ -28,11 +28,10 @@ public partial class Player : CharacterBody3D
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
-        // Clamp initial rotation
+        // Clamp initial vertical rotation and ensure roll is clear
         rotation = cameraPivot.Rotation;
         rotation.X = Mathf.Clamp(rotation.X, -ConvertDegreesToRadians(maxSpringRotation.X), ConvertDegreesToRadians(maxSpringRotation.X));
-        rotation.Y = Mathf.Clamp(rotation.Y, -ConvertDegreesToRadians(maxSpringRotation.Y), ConvertDegreesToRadians(maxSpringRotation.Y));
-        rotation.Z = Mathf.Clamp(rotation.Z, -ConvertDegreesToRadians(maxSpringRotation.Z), ConvertDegreesToRadians(maxSpringRotation.Z));
+        rotation.Z = 0;
         cameraPivot.Rotation = rotation;
     }
 
@@ -43,9 +42,10 @@ public partial class Player : CharacterBody3D
             cameraPivot.RotateY(ConvertDegreesToRadians(-mouseMotion.Relative.X * cameraSensitivity_H));
             cameraPivot.RotateX(ConvertDegreesToRadians(-mouseMotion.Relative.Y * cameraSensitivity_V));
 
-            // Clamp vertical rotation to avoid flipping
+            // Clamp vertical rotation (X-axis) to avoid flipping/upside down
             Vector3 camRot = cameraPivot.Rotation;
             camRot.X = Mathf.Clamp(camRot.X, -ConvertDegreesToRadians(maxSpringRotation.X), ConvertDegreesToRadians(maxSpringRotation.X));
+            camRot.Z = 0; // Keep camera level
             cameraPivot.Rotation = camRot;
         }
     }
